@@ -1,6 +1,6 @@
-# A theory teest (part 1)
+# A theory test (part 1)
 
-The goal is to build a fully functional small backend project based on all of the already accumulated knowledge to find weakpoints in understanding of the design architecture. The task was created by GPT, but the code is fully self-written. 
+The goal is to build a fully functional small back-end project based on all of the already accumulated knowledge to find weak points in understanding of the design architecture. The task was created by GPT, but the code is fully self-written. 
 
 ## Requirements
 
