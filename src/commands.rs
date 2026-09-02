@@ -1,29 +1,32 @@
 use std::sync::mpsc::Sender;
 
-use crate::jobs::{JobId, JobState, JobTitle};
-
-
+use crate::bots::{BotCharge, BotCoordinates, BotId, BotState, BotTitle};
 
 pub enum Commands {
     Create {
-        title: JobTitle,
+        title: BotTitle,
+        coordinates: BotCoordinates,
+        state: BotState,
+        charge: BotCharge,
         response_sender: Sender<CommandResponse>
     },
     Get {
-        id: JobId,
+        id: BotId,
         response_sender: Sender<CommandResponse>
     },
     Update {
-        id: JobId,
-        title: Option<JobTitle>,
-        state: Option<JobState>,
+        id: BotId,
+        title: Option<BotTitle>,
+        coordinates: Option<BotCoordinates>,
+        state: Option<BotState>,
+        charge: Option<BotCharge>,
         response_sender: Sender<CommandResponse>
     },
     List {
         response_sender: Sender<CommandResponse>
     },
     Delete {
-        id: JobId,
+        id: BotId,
         response_sender: Sender<CommandResponse>
     },
     Shutdown {
@@ -33,13 +36,15 @@ pub enum Commands {
 
 pub enum CommandResponse {
     UnknownCommand,
-    CreatedJob,
+    CreatedBot,
     InvalidTItle,
     InvalidId,
+    InvalidCoordinates,
     InvalidState,
-    GetJob,
-    UpdatedJob,
-    JobList,
-    DeletedJob,
+    InvalidCharge,
+    GetBot,
+    UpdatedBot,
+    BotList,
+    DeletedBot,
     Shutdown
 }
