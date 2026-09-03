@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, ops::AddAssign};
+use std::{collections::BTreeMap, fmt::Display, ops::AddAssign};
 
 
 pub struct Bot {
@@ -18,6 +18,7 @@ pub enum BotState{
 
 pub struct BotCoordinates(i32,i32);
 
+#[derive(Clone)]
 pub struct BotTitle(String);
 
 pub struct BotCharge(u8);
@@ -30,6 +31,39 @@ pub struct BotStore {
 impl AddAssign<u32> for BotId {
     fn add_assign(&mut self, rhs: u32) {
         self.0 += rhs
+    }
+}
+
+impl Display for BotId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl Display for BotCoordinates {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}, {}", self.0, self.1)
+    }
+}
+
+impl Display for BotState {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            BotState::Stationary => write!(f, "Stationary"),
+            BotState::Moving => write!(f, "Moving"),
+        }
+    }
+}
+
+impl Display for BotTitle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl Display for BotCharge {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 
@@ -55,6 +89,10 @@ impl BotStore {
         
         self.id += 1;
         id
+    }
+
+    pub fn list(&self) -> Vec<(BotId, BotTitle)> {
+        self.bots.iter().map(|(id, bot)| (id.clone(), bot.title.clone())).collect::<Vec<(BotId, BotTitle)>>()
     }
 }
 

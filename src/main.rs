@@ -1,6 +1,6 @@
-use std::sync::mpsc::channel;
+use std::sync::{Arc, Mutex, mpsc::{Sender, channel}};
 
-use crate::{bots::BotStore, client::client, commands::Commands, server::server, workers::WorkQueue};
+use crate::{bots::BotStore, commands::{CommandResponse, Commands}, server::server};
 
 mod client;
 mod commands;
@@ -11,9 +11,10 @@ mod workers;
 
 fn main() {
     let mut bots = BotStore::new();
-    let mut work_queue = WorkQueue::new();
-    let (sender, receiver) = channel::<Commands>();
-    client(sender);
-    server(receiver, work_queue);
+    let (sender, receiver) = channel::<(Commands, Sender<CommandResponse>)>();
+    let (work_sender, work_receiver) = channel::<(Commands, Sender<CommandResponse>)>();
+    let work_receiver_mutex = Arc::new(Mutex::new(work_receiver));
+    server(receiver, work_sender);
+
 
 }
